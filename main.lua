@@ -2,7 +2,7 @@ local MapGenerator = require("src/MapGenerator")
 local map_generator
 
 function love.load()
-  map_generator = MapGenerator("lib/image/texture_sheet.png")
+  map_generator = MapGenerator("lib/image/texture_sheet.png", "lib/map/test.map")
 end
 
 function love.update(dt)
