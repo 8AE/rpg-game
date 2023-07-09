@@ -5,7 +5,7 @@ local player
 
 function love.load()
   map_generator = MapGenerator("lib/image/texture_sheet.png", "lib/map/test.map")
-  player = Player("lib/image/characters/main-character.png", 32 * 4, 32 * 20)
+  player = Player("lib/image/characters/main-character.png", 32 * 0, 32 * 0)
 end
 
 function love.update(dt)
