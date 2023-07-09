@@ -1,7 +1,17 @@
 local tile_size = 32
 
-local function draw_player_based_on_current_direction()
-
+local function sprite_based_on_direction(player, sprites)
+  temp_sprite = sprites[1]
+  if player.direction == 'up' then
+    temp_sprite = sprites[11]
+  elseif player.direction == 'down' then
+    temp_sprite = sprites[2]
+  elseif player.direction == 'left' then
+    temp_sprite = sprites[5]
+  elseif player.direction == 'right' then
+    temp_sprite = sprites[8]
+  end
+  return temp_sprite
 end
 
 local function generate_sprites(image)
@@ -21,22 +31,12 @@ return function(image_path, starting_x, starting_y)
   player.y = starting_y
   local image = love.graphics.newImage(image_path)
   local sprites = generate_sprites(image)
-  local direction
-
+  player.direction = 'down'
 
   function player:draw()
     love.graphics.push()
     love.graphics.scale(2, 2)
-    love.graphics.draw(image, sprites[1], player.x, player.y)
-    -- love.graphics.draw(image, sprites[2], 1 * tile_size, 0 * tile_size)
-    -- love.graphics.draw(image, sprites[3], 2 * tile_size, 0 * tile_size)
-    -- love.graphics.draw(image, sprites[4], 3 * tile_size, 0 * tile_size)
-    -- love.graphics.draw(image, sprites[5], 4 * tile_size, 0 * tile_size)
-    -- love.graphics.draw(image, sprites[6], 5 * tile_size, 0 * tile_size)
-    -- love.graphics.draw(image, sprites[7], 6 * tile_size, 0 * tile_size)
-    -- love.graphics.draw(image, sprites[8], 7 * tile_size, 0 * tile_size)
-    -- love.graphics.draw(image, sprites[9], 8 * tile_size, 0 * tile_size)
-    -- love.graphics.draw(image, sprites[10], 9 * tile_size, 0 * tile_size)
+    love.graphics.draw(image, sprite_based_on_direction(player, sprites), player.x, player.y)
     love.graphics.pop()
   end
 
