@@ -33,11 +33,13 @@ end
 
 return function(image_path, starting_x, starting_y)
   local player = {}
-  player.x = starting_x
-  player.y = starting_y
+  player.x = starting_x * tile_size
+  player.y = starting_y * tile_size
   local image = love.graphics.newImage(image_path)
   local sprites = generate_sprites(image)
   player.direction = 'down'
+  player.moving = false
+  player.speed = 1
 
   function player:draw()
     love.graphics.push()
