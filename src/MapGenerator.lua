@@ -1,7 +1,7 @@
 local tile_size = 32
 
 local function parse_file_by_comma(filePath)
-  local content, size = love.filesystem.read(filePath)   -- Read the file using Love2D's Filesystem module
+  local content, size = love.filesystem.read(filePath) -- Read the file using Love2D's Filesystem module
   if not content then
     error("no file " .. filePath)
   end
@@ -50,13 +50,24 @@ return function(image_path, map_path)
   local MapGenerator = {}
   local image = love.graphics.newImage(image_path)
   local tile_map = tile_sheet_to_tile_map(image)
-  local map_width_and_height, parsed_map_data = parse_file_by_comma(map_path)
+  local map_width_and_height, parsed_map_data = parse_file_by_comma(map_path .. '.map')
+  local _, parsed_wall_map_data = parse_file_by_comma(map_path .. '.cmap')
 
   function MapGenerator:draw()
     love.graphics.push()
     love.graphics.scale(2, 2)
     draw_map(image, map_width_and_height, parsed_map_data, tile_map)
     love.graphics.pop()
+  end
+
+  function MapGenerator:canMove(target_x, target_y)
+    target_x = math.ceil(target_x / tile_size)
+    target_y = math.ceil(target_y / tile_size)
+    if parsed_wall_map_data[target_y][target_x] == 1 then
+      return false
+    else
+      return true
+    end
   end
 
   return MapGenerator
