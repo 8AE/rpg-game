@@ -35,6 +35,20 @@ local function draw_map(image, map_width_and_height, map_data, tile_data)
   end
 end
 
+local function draw_wall_map(map_width_and_height, map_data)
+  for i = 1, map_width_and_height[1], 1 do
+    for j = 1, map_width_and_height[2], 1 do
+      if map_data[i][j] == 1 then
+        love.graphics.setColor(255, 0, 0)
+      else
+        love.graphics.setColor(0, 255, 0)
+      end
+      love.graphics.rectangle("line", (j - 1) * tile_size, (i - 1) * tile_size, tile_size, tile_size)
+    end
+  end
+  love.graphics.reset()
+end
+
 local function tile_sheet_to_tile_map(image)
   local tile_map = {}
   for i = 0, (image:getWidth() / tile_size) - 1, 1 do
@@ -57,12 +71,13 @@ return function(image_path, map_path)
     love.graphics.push()
     love.graphics.scale(2, 2)
     draw_map(image, map_width_and_height, parsed_map_data, tile_map)
+    draw_wall_map(map_width_and_height, parsed_map_data)
     love.graphics.pop()
   end
 
   function MapGenerator:canMove(target_x, target_y)
-    target_x = math.ceil(target_x / tile_size)
-    target_y = math.ceil(target_y / tile_size)
+    target_x = math.floor(target_x / tile_size)
+    target_y = math.floor(target_y / tile_size)
     if parsed_wall_map_data[target_y][target_x] == 1 then
       return false
     else

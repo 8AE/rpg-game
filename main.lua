@@ -4,13 +4,13 @@ local map
 local player
 
 function love.load()
-  map = MapGenerator("lib/image/texture_sheet.png", "lib/map/test")
+  map = MapGenerator("lib/image/texture_sheet.png", "lib/map/level1_1")
   player = Player("lib/image/characters/main-character.png", 7, 18)
 end
 
 function love.update(dt)
   if love.keyboard.isDown("up") then
-    if map:canMove(player.x, player.y - player.speed) then
+    if map:canMove(player.x, player.y - 32) then
       player.y = player.y - player.speed
     end
     player.direction = 'up'
@@ -22,7 +22,7 @@ function love.update(dt)
     player.direction = 'down'
   end
   if love.keyboard.isDown("left") then
-    if map:canMove(player.x - player.speed, player.y) then
+    if map:canMove(player.x - 32, player.y) then
       player.x = player.x - player.speed
     end
     player.direction = 'left'
