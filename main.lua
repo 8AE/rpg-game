@@ -3,9 +3,29 @@ local Player = require("src/Player")
 local map
 local player
 
+local function old_update()
+  if love.keyboard.isDown("up") then
+    player.y = player.y - player.speed
+    player.direction = 'up'
+  end
+  if love.keyboard.isDown("down") then
+    player.y = player.y + player.speed
+    player.direction = 'down'
+  end
+  if love.keyboard.isDown("left") then
+    player.x = player.x - player.speed
+    player.direction = 'left'
+  end
+  if love.keyboard.isDown("right") then
+    player.x = player.x + player.speed
+    player.direction = 'right'
+  end
+end
+
 function love.load()
   map = MapGenerator("lib/image/texture_sheet.png", "lib/map/level1_1")
   player = Player("lib/image/characters/main-character.png", 7, 18)
+  love.update = old_update
 end
 
 function love.update(dt)

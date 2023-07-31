@@ -44,6 +44,7 @@ local function draw_wall_map(map_width_and_height, map_data)
         love.graphics.setColor(0, 255, 0)
       end
       love.graphics.rectangle("line", (j - 1) * tile_size, (i - 1) * tile_size, tile_size, tile_size)
+      love.graphics.print(tostring(j - 1) .. "," .. tostring(i - 1), (j - 1) * tile_size, (i - 1) * tile_size)
     end
   end
   love.graphics.reset()
@@ -71,7 +72,7 @@ return function(image_path, map_path)
     love.graphics.push()
     love.graphics.scale(2, 2)
     draw_map(image, map_width_and_height, parsed_map_data, tile_map)
-    draw_wall_map(map_width_and_height, parsed_map_data)
+    draw_wall_map(map_width_and_height, parsed_wall_map_data)
     love.graphics.pop()
   end
 
