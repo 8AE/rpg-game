@@ -31,6 +31,13 @@ local function generate_sprites(image)
   return sprites
 end
 
+local function draw_debug_box(player)
+  love.graphics.setColor(255, 0, 0)
+  love.graphics.rectangle("line", ((player.x / tile_size)) * tile_size, ((player.y / tile_size)) * tile_size,
+    tile_size, tile_size)
+  love.graphics.reset()
+end
+
 return function(image_path, starting_x, starting_y)
   local player = {}
   player.x = starting_x * tile_size
@@ -45,6 +52,7 @@ return function(image_path, starting_x, starting_y)
     love.graphics.push()
     love.graphics.scale(2, 2)
     love.graphics.draw(image, sprite_based_on_direction(player, sprites), player.x, player.y)
+    draw_debug_box(player)
     love.graphics.pop()
   end
 

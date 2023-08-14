@@ -35,7 +35,7 @@ end
 function love.load()
   map = MapGenerator("lib/image/texture_sheet.png", "lib/map/level1_1")
   player = Player("lib/image/characters/main-character.png", 7, 18)
-  love.update = old_update
+  -- love.update = old_update
 end
 
 function love.update(dt)
@@ -68,7 +68,7 @@ end
 function love.draw()
   love.graphics.push()
   love.graphics.translate(-player.x, -player.y)
-  map.draw()
+  map:draw()
   player:draw()
   love.graphics.pop()
 
