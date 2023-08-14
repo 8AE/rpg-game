@@ -1,4 +1,5 @@
 local tile_size = 32
+local legacy_offset = 1
 
 local function parse_file_by_comma(filePath)
   local content, size = love.filesystem.read(filePath) -- Read the file using Love2D's Filesystem module
@@ -30,12 +31,22 @@ end
 local function draw_map(image, map_width_and_height, map_data, tile_data)
   for i = 1, map_width_and_height[1], 1 do
     for j = 1, map_width_and_height[2], 1 do
-      love.graphics.draw(image, tile_data[map_data[i][j] + 1], (j - 1) * tile_size, (i - 1) * tile_size)
+      love.graphics.draw(image, tile_data[map_data[i][j] + legacy_offset], (j - legacy_offset) * tile_size,
+        (i - legacy_offset) * tile_size)
     end
   end
 end
 
-local function draw_wall_map(map_width_and_height, map_data)
+local function draw_tile(image, map_width_and_height, map_data, tile_data, x, y)
+  love.graphics.draw(image, tile_data[map_data[y + 1][x + 1] + legacy_offset], (x) * tile_size,
+    (y) * tile_size)
+
+  love.graphics.setColor(0, 0, 255)
+  love.graphics.rectangle("line", (x) * tile_size, (y) * tile_size, tile_size, tile_size)
+  love.graphics.reset()
+end
+
+local function draw_debug_map(map_width_and_height, map_data)
   for i = 1, map_width_and_height[1], 1 do
     for j = 1, map_width_and_height[2], 1 do
       if map_data[i][j] == 1 then
@@ -43,8 +54,9 @@ local function draw_wall_map(map_width_and_height, map_data)
       else
         love.graphics.setColor(0, 255, 0)
       end
-      love.graphics.rectangle("line", (j - 1) * tile_size, (i - 1) * tile_size, tile_size, tile_size)
-      love.graphics.print(tostring(j - 1) .. "," .. tostring(i - 1), (j - 1) * tile_size, (i - 1) * tile_size)
+      love.graphics.rectangle("line", (j - legacy_offset) * tile_size, (i - 1) * tile_size, tile_size, tile_size)
+      love.graphics.print(tostring(j - legacy_offset) .. "," .. tostring(i - 1), (j - 1) * tile_size,
+        (i - legacy_offset) * tile_size)
     end
   end
   love.graphics.reset()
@@ -72,14 +84,23 @@ return function(image_path, map_path)
     love.graphics.push()
     love.graphics.scale(2, 2)
     draw_map(image, map_width_and_height, parsed_map_data, tile_map)
-    draw_wall_map(map_width_and_height, parsed_wall_map_data)
+    draw_debug_map(map_width_and_height, parsed_wall_map_data)
+    love.graphics.pop()
+  end
+
+  function MapGenerator.debug_draw_tile(target_x, target_y)
+    love.graphics.push()
+    love.graphics.scale(2, 2)
+    target_x = math.floor(target_x / tile_size)
+    target_y = math.floor(target_y / tile_size)
+    draw_tile(image, map_width_and_height, parsed_map_data, tile_map, target_x, target_y)
     love.graphics.pop()
   end
 
   function MapGenerator:canMove(target_x, target_y)
     target_x = math.floor(target_x / tile_size)
     target_y = math.floor(target_y / tile_size)
-    if parsed_wall_map_data[target_y][target_x] == 1 then
+    if parsed_wall_map_data[target_y + 1][target_x + 1] == 1 then
       return false
     else
       return true

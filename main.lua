@@ -69,6 +69,7 @@ function love.draw()
   love.graphics.push()
   love.graphics.translate(-player.x, -player.y)
   map:draw()
+  map.debug_draw_tile(player.x, player.y)
   player:draw()
   love.graphics.pop()
 
