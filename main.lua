@@ -1,5 +1,5 @@
 local MapGenerator = require("src/MapGenerator")
-local Player = require("src/Player")
+local Player = require("src.player")
 local map
 local player
 local tile_size = 32
@@ -16,11 +16,12 @@ end
 
 function love.load()
   map = MapGenerator("lib/image/texture_sheet.png", "lib/map/level1_1")
-  player = Player("lib/image/characters/main-character.png", 7, 18)
+  player = Player.new("lib/image/characters/main-character.png", 7, 18)
 end
 
 function love.update(dt)
   player:update_position_based_on_direction()
+
   if love.keyboard.isDown("up") then
     player:update_direction_if_not_moving('up')
     if map:canMove(player.x, player.y - tile_size) then

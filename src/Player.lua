@@ -1,6 +1,8 @@
 local tile_size = 32
+local player = {}
+local Player = {}
 
-local function debug_draw_all_sprites(image, sprites)
+local debug_draw_all_sprites = function(image, sprites)
   for i = 1, #sprites, 1 do
     love.graphics.draw(image, sprites[i], tile_size * i, tile_size)
   end
@@ -20,7 +22,7 @@ local function sprite_based_on_direction(player, sprites)
   return temp_sprite
 end
 
-local function generate_sprites(image)
+local generate_sprites = function(image)
   local sprites = {}
   for i = 0, (image:getWidth() / tile_size), 1 do
     for j = 0, (image:getHeight() / tile_size) - 2, 1 do
@@ -31,86 +33,88 @@ local function generate_sprites(image)
   return sprites
 end
 
-local function draw_debug_box(player)
+local draw_debug_box = function(player)
   love.graphics.setColor(255, 0, 0)
   love.graphics.rectangle("line", ((player.x / tile_size)) * tile_size, ((player.y / tile_size)) * tile_size,
     tile_size, tile_size)
   love.graphics.reset()
 end
 
-return function(image_path, starting_x, starting_y)
-  local player = {}
-  player.x = starting_x * tile_size
-  player.y = starting_y * tile_size
-  local image = love.graphics.newImage(image_path)
-  local sprites = generate_sprites(image)
-  player.direction = 'down'
-  player.moving = false
-  player.speed = 1.25
-  player.target_x = 0
-  player.target_y = 0
-
-  function player:draw()
-    love.graphics.push()
-    love.graphics.scale(2, 2)
-    love.graphics.draw(image, sprite_based_on_direction(player, sprites), player.x, player.y)
-    draw_debug_box(player)
-    love.graphics.pop()
-  end
-
-  function player:move(new_x, new_y)
-    if not self.moving then
-      self.target_x = new_x
-      self.target_y = new_y
-      self.moving = true
-    end
-  end
-
-  function player:update_position_based_on_direction()
-    if self.moving then
-      if self.direction == 'up' then
-        if self.y <= self.target_y then
-          self.y = self.target_y
-          self.moving = false
-        else
-          self.y = self.y - self.speed
-        end
-      end
-
-      if self.direction == 'down' then
-        if self.y >= self.target_y then
-          self.y = self.target_y
-          self.moving = false
-        else
-          self.y = self.y + self.speed
-        end
-      end
-
-      if self.direction == 'left' then
-        if self.x <= self.target_x then
-          self.x = self.target_x
-          self.moving = false
-        else
-          self.x = self.x - self.speed
-        end
-      end
-
-      if self.direction == 'right' then
-        if self.x >= self.target_x then
-          self.x = self.target_x
-          self.moving = false
-        else
-          self.x = self.x + self.speed
-        end
-      end
-    end
-  end
-
-  function player:update_direction_if_not_moving(new_direction)
-    if not self.moving then
-      self.direction = new_direction
-    end
-  end
-
-  return player
+function Player:draw()
+  love.graphics.push()
+  love.graphics.scale(2, 2)
+  love.graphics.draw(self.image, sprite_based_on_direction(self, self.sprites), self.x, self.y)
+  draw_debug_box(self)
+  love.graphics.pop()
 end
+
+function Player:move(new_x, new_y)
+  if not self.moving then
+    self.target_x = new_x
+    self.target_y = new_y
+    self.moving = true
+  end
+end
+
+function Player:update_position_based_on_direction()
+  if self.moving then
+    if self.direction == 'up' then
+      if self.y <= self.target_y then
+        self.y = self.target_y
+        self.moving = false
+      else
+        self.y = self.y - self.speed
+      end
+    end
+
+    if self.direction == 'down' then
+      if self.y >= self.target_y then
+        self.y = self.target_y
+        self.moving = false
+      else
+        self.y = self.y + self.speed
+      end
+    end
+
+    if self.direction == 'left' then
+      if self.x <= self.target_x then
+        self.x = self.target_x
+        self.moving = false
+      else
+        self.x = self.x - self.speed
+      end
+    end
+
+    if self.direction == 'right' then
+      if self.x >= self.target_x then
+        self.x = self.target_x
+        self.moving = false
+      else
+        self.x = self.x + self.speed
+      end
+    end
+  end
+end
+
+function Player:update_direction_if_not_moving(new_direction)
+  if not self.moving then
+    self.direction = new_direction
+  end
+end
+
+function player.new(image_path, starting_x, starting_y)
+  local self = {}
+  self.x = starting_x * tile_size
+  self.y = starting_y * tile_size
+  self.direction = 'down'
+  self.moving = false
+  self.speed = 1.25
+  self.target_x = 0
+  self.target_y = 0
+  self.image = love.graphics.newImage(image_path)
+  self.sprites = generate_sprites(self.image)
+  setmetatable(self, { __index = Player })
+  return self
+end
+
+return player
