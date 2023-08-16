@@ -2,6 +2,7 @@ local MapGenerator = require("src/MapGenerator")
 local Player = require("src/Player")
 local map
 local player
+local tile_size = 32
 
 if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
   local lldebugger = require "lldebugger"
@@ -13,55 +14,36 @@ if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
   end
 end
 
-local function old_update()
-  if love.keyboard.isDown("up") then
-    player.y = player.y - player.speed
-    player.direction = 'up'
-  end
-  if love.keyboard.isDown("down") then
-    player.y = player.y + player.speed
-    player.direction = 'down'
-  end
-  if love.keyboard.isDown("left") then
-    player.x = player.x - player.speed
-    player.direction = 'left'
-  end
-  if love.keyboard.isDown("right") then
-    player.x = player.x + player.speed
-    player.direction = 'right'
-  end
-end
-
 function love.load()
   map = MapGenerator("lib/image/texture_sheet.png", "lib/map/level1_1")
   player = Player("lib/image/characters/main-character.png", 7, 18)
-  -- love.update = old_update
 end
 
 function love.update(dt)
+  player:update_position_based_on_direction()
   if love.keyboard.isDown("up") then
-    if map:canMove(player.x, player.y - 32) then
-      player.y = player.y - player.speed
+    player:update_direction_if_not_moving('up')
+    if map:canMove(player.x, player.y - tile_size) then
+      player:move(player.x, player.y - tile_size)
     end
-    player.direction = 'up'
   end
   if love.keyboard.isDown("down") then
-    if map:canMove(player.x, player.y + player.speed) then
-      player.y = player.y + player.speed
+    player:update_direction_if_not_moving('down')
+    if map:canMove(player.x, player.y + player.speed, player.direction) then
+      player:move(player.x, player.y + tile_size)
     end
-    player.direction = 'down'
   end
   if love.keyboard.isDown("left") then
-    if map:canMove(player.x - 32, player.y) then
-      player.x = player.x - player.speed
+    player:update_direction_if_not_moving('left')
+    if map:canMove(player.x - tile_size, player.y) then
+      player:move(player.x - tile_size, player.y)
     end
-    player.direction = 'left'
   end
   if love.keyboard.isDown("right") then
-    if map:canMove(player.x + player.speed, player.y) then
-      player.x = player.x + player.speed
+    player:update_direction_if_not_moving('right')
+    if map:canMove(player.x + player.speed, player.y, player.direction) then
+      player:move(player.x + tile_size, player.y)
     end
-    player.direction = 'right'
   end
 end
 
@@ -74,8 +56,8 @@ function love.draw()
   love.graphics.pop()
 
   love.graphics.print("Player x = " .. player.x, 0, 0)
-  love.graphics.print("Player x scaled = " .. math.floor(player.x / 32), 0, 10)
+  love.graphics.print("Player x scaled = " .. math.floor(player.x / tile_size), 0, 10)
   love.graphics.print("Player y = " .. player.y, 0, 20)
-  love.graphics.print("Player y scaled = " .. math.floor(player.y / 32), 0, 30)
+  love.graphics.print("Player y scaled = " .. math.floor(player.y / tile_size), 0, 30)
   love.graphics.print("Can i be here? = " .. tostring(map:canMove(player.x, player.y)), 0, 40)
 end

@@ -46,7 +46,9 @@ return function(image_path, starting_x, starting_y)
   local sprites = generate_sprites(image)
   player.direction = 'down'
   player.moving = false
-  player.speed = 1
+  player.speed = 1.25
+  player.target_x = 0
+  player.target_y = 0
 
   function player:draw()
     love.graphics.push()
@@ -54,6 +56,60 @@ return function(image_path, starting_x, starting_y)
     love.graphics.draw(image, sprite_based_on_direction(player, sprites), player.x, player.y)
     draw_debug_box(player)
     love.graphics.pop()
+  end
+
+  function player:move(new_x, new_y)
+    if not self.moving then
+      self.target_x = new_x
+      self.target_y = new_y
+      self.moving = true
+    end
+  end
+
+  function player:update_position_based_on_direction()
+    if self.moving then
+      if self.direction == 'up' then
+        if self.y <= self.target_y then
+          self.y = self.target_y
+          self.moving = false
+        else
+          self.y = self.y - self.speed
+        end
+      end
+
+      if self.direction == 'down' then
+        if self.y >= self.target_y then
+          self.y = self.target_y
+          self.moving = false
+        else
+          self.y = self.y + self.speed
+        end
+      end
+
+      if self.direction == 'left' then
+        if self.x <= self.target_x then
+          self.x = self.target_x
+          self.moving = false
+        else
+          self.x = self.x - self.speed
+        end
+      end
+
+      if self.direction == 'right' then
+        if self.x >= self.target_x then
+          self.x = self.target_x
+          self.moving = false
+        else
+          self.x = self.x + self.speed
+        end
+      end
+    end
+  end
+
+  function player:update_direction_if_not_moving(new_direction)
+    if not self.moving then
+      self.direction = new_direction
+    end
   end
 
   return player
