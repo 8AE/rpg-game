@@ -15,8 +15,8 @@ if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
 end
 
 function love.load()
-  map = MapGenerator("lib/image/texture_sheet.png", "lib/map/level1_1")
-  player = Player.new("lib/image/characters/main-character.png", 7, 18)
+  map = MapGenerator("data/image/texture_sheet.png", "data/map/level1_1")
+  player = Player.new("data/image/characters/main-character.png", 7, 18)
 end
 
 function love.update(dt)

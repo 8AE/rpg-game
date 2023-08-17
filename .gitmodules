@@ -1,0 +1,3 @@
+[submodule "lib/cute"]
+	path = lib/cute
+	url = https://github.com/gtrogers/Cute.git
