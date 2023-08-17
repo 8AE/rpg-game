@@ -1,3 +1,4 @@
+local cute = require("lib.cute.cute")
 local MapGenerator = require("src/MapGenerator")
 local Player = require("src.player")
 local map
@@ -14,7 +15,8 @@ if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
   end
 end
 
-function love.load()
+function love.load(args)
+  cute.go(args)
   map = MapGenerator("data/image/texture_sheet.png", "data/map/level1_1")
   player = Player.new("data/image/characters/main-character.png", 7, 18)
 end
@@ -61,4 +63,10 @@ function love.draw()
   love.graphics.print("Player y = " .. player.y, 0, 20)
   love.graphics.print("Player y scaled = " .. math.floor(player.y / tile_size), 0, 30)
   love.graphics.print("Can i be here? = " .. tostring(map:canMove(player.x, player.y)), 0, 40)
+
+  cute.draw(love.graphics)
+end
+
+love.keypressed = function(key)
+  cute.keypressed(key)
 end
