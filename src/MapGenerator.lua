@@ -82,9 +82,8 @@ return function(image_path, map_path)
 
   function MapGenerator:draw()
     love.graphics.push()
-    love.graphics.scale(2, 2)
     draw_map(image, map_width_and_height, parsed_map_data, tile_map)
-    draw_debug_map(map_width_and_height, parsed_wall_map_data)
+    -- draw_debug_map(map_width_and_height, parsed_wall_map_data)
     love.graphics.pop()
   end
 

@@ -42,7 +42,6 @@ end
 
 function Player:draw()
   love.graphics.push()
-  love.graphics.scale(2, 2)
   love.graphics.draw(self.image, sprite_based_on_direction(self, self.sprites), self.x, self.y)
   draw_debug_box(self)
   love.graphics.pop()
@@ -111,6 +110,7 @@ function player.new(image_path, starting_x, starting_y)
   self.speed = 1.25
   self.target_x = 0
   self.target_y = 0
+  self.inventory = {}
   self.image = love.graphics.newImage(image_path)
   self.sprites = generate_sprites(self.image)
   setmetatable(self, { __index = Player })
