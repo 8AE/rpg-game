@@ -4,11 +4,11 @@ local Item = require("src.item")
 local inventory_screen = require("src.inventory_screen")
 local MapGenerator = require("src/MapGenerator")
 local Player = require("src.player")
+local constants = require("src.constants")
 
 local map
 local player
 local example_item
-local tile_size = 32
 
 local show_inventory
 
@@ -40,35 +40,35 @@ function love.update(dt)
 
   if love.keyboard.isDown("up") then
     player:update_direction_if_not_moving('up')
-    if map:canMove(player.x, player.y - tile_size) then
-      player:move(player.x, player.y - tile_size)
+    if map:canMove(player.x, player.y - constants.tile_size) then
+      player:move(player.x, player.y - constants.tile_size)
     end
   end
   if love.keyboard.isDown("down") then
     player:update_direction_if_not_moving('down')
     if map:canMove(player.x, player.y + player.speed, player.direction) then
-      player:move(player.x, player.y + tile_size)
+      player:move(player.x, player.y + constants.tile_size)
     end
   end
   if love.keyboard.isDown("left") then
     player:update_direction_if_not_moving('left')
-    if map:canMove(player.x - tile_size, player.y) then
-      player:move(player.x - tile_size, player.y)
+    if map:canMove(player.x - constants.tile_size, player.y) then
+      player:move(player.x - constants.tile_size, player.y)
     end
   end
   if love.keyboard.isDown("right") then
     player:update_direction_if_not_moving('right')
     if map:canMove(player.x + player.speed, player.y, player.direction) then
-      player:move(player.x + tile_size, player.y)
+      player:move(player.x + constants.tile_size, player.y)
     end
   end
 end
 
 local print_debug_information = function(player)
   love.graphics.print("Player x = " .. player.x, 0, 0)
-  love.graphics.print("Player x scaled = " .. math.floor(player.x / tile_size), 0, 10)
+  love.graphics.print("Player x scaled = " .. math.floor(player.x / constants.tile_size), 0, 10)
   love.graphics.print("Player y = " .. player.y, 0, 20)
-  love.graphics.print("Player y scaled = " .. math.floor(player.y / tile_size), 0, 30)
+  love.graphics.print("Player y scaled = " .. math.floor(player.y / constants.tile_size), 0, 30)
   love.graphics.print("Can i be here? = " .. tostring(map:canMove(player.x, player.y)), 0, 40)
   love.graphics.print("Inventory is shown = " .. tostring(show_inventory), 0, 50)
 end

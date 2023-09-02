@@ -1,5 +1,4 @@
-local tile_size = 32
-local legacy_offset = 1
+local constants = require("src.constants")
 
 local function parse_file_by_comma(filePath)
   local content, size = love.filesystem.read(filePath) -- Read the file using Love2D's Filesystem module
@@ -31,18 +30,20 @@ end
 local function draw_map(image, map_width_and_height, map_data, tile_data)
   for i = 1, map_width_and_height[1], 1 do
     for j = 1, map_width_and_height[2], 1 do
-      love.graphics.draw(image, tile_data[map_data[i][j] + legacy_offset], (j - legacy_offset) * tile_size,
-        (i - legacy_offset) * tile_size)
+      love.graphics.draw(image, tile_data[map_data[i][j] + constants.legacy_offset],
+        (j - constants.legacy_offset) * constants.tile_size,
+        (i - constants.legacy_offset) * constants.tile_size)
     end
   end
 end
 
 local function draw_tile(image, map_width_and_height, map_data, tile_data, x, y)
-  love.graphics.draw(image, tile_data[map_data[y + 1][x + 1] + legacy_offset], (x) * tile_size,
-    (y) * tile_size)
+  love.graphics.draw(image, tile_data[map_data[y + 1][x + 1] + constants.legacy_offset], (x) * constants.tile_size,
+    (y) * constants.tile_size)
 
   love.graphics.setColor(0, 0, 255)
-  love.graphics.rectangle("line", (x) * tile_size, (y) * tile_size, tile_size, tile_size)
+  love.graphics.rectangle("line", (x) * constants.tile_size, (y) * constants.tile_size, constants.tile_size,
+    constants.tile_size)
   love.graphics.reset()
 end
 
@@ -54,9 +55,10 @@ local function draw_debug_map(map_width_and_height, map_data)
       else
         love.graphics.setColor(0, 255, 0)
       end
-      love.graphics.rectangle("line", (j - legacy_offset) * tile_size, (i - 1) * tile_size, tile_size, tile_size)
-      love.graphics.print(tostring(j - legacy_offset) .. "," .. tostring(i - 1), (j - 1) * tile_size,
-        (i - legacy_offset) * tile_size)
+      love.graphics.rectangle("line", (j - constants.legacy_offset) * constants.tile_size, (i - 1) * constants.tile_size,
+        constants.tile_size, constants.tile_size)
+      love.graphics.print(tostring(j - constants.legacy_offset) .. "," .. tostring(i - 1), (j - 1) * constants.tile_size,
+        (i - constants.legacy_offset) * constants.tile_size)
     end
   end
   love.graphics.reset()
@@ -64,10 +66,12 @@ end
 
 local function tile_sheet_to_tile_map(image)
   local tile_map = {}
-  for i = 0, (image:getWidth() / tile_size) - 1, 1 do
-    for j = 0, (image:getHeight() / tile_size) - 1, 1 do
+  for i = 0, (image:getWidth() / constants.tile_size) - 1, 1 do
+    for j = 0, (image:getHeight() / constants.tile_size) - 1, 1 do
       table.insert(tile_map,
-        love.graphics.newQuad(j * 32, i * 32, tile_size, tile_size, image:getWidth(), image:getHeight()))
+        love.graphics.newQuad(j * constants.tile_size, i * constants.tile_size, constants.tile_size, constants.tile_size,
+          image:getWidth(),
+          image:getHeight()))
     end
   end
   return tile_map
@@ -90,15 +94,15 @@ return function(image_path, map_path)
   function MapGenerator.debug_draw_tile(target_x, target_y)
     love.graphics.push()
     love.graphics.scale(2, 2)
-    target_x = math.floor(target_x / tile_size)
-    target_y = math.floor(target_y / tile_size)
+    target_x = math.floor(target_x / constants.tile_size)
+    target_y = math.floor(target_y / constants.tile_size)
     draw_tile(image, map_width_and_height, parsed_map_data, tile_map, target_x, target_y)
     love.graphics.pop()
   end
 
   function MapGenerator:canMove(target_x, target_y, player_direction)
-    target_x = math.floor(target_x / tile_size)
-    target_y = math.floor(target_y / tile_size)
+    target_x = math.floor(target_x / constants.tile_size)
+    target_y = math.floor(target_y / constants.tile_size)
     if parsed_wall_map_data[target_y + 1][target_x + 1] == 1 or
         player_direction == 'right' and parsed_wall_map_data[target_y + 1][target_x + 2] == 1 or
         player_direction == 'down' and parsed_wall_map_data[target_y + 2][target_x + 1] == 1 then

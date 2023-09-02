@@ -1,4 +1,3 @@
-local tile_size = 32
 local item = {}
 local Item = {}
 
