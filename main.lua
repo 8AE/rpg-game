@@ -5,6 +5,7 @@ local inventory_screen = require("src.inventory_screen")
 local MapGenerator = require("src/MapGenerator")
 local Player = require("src.player")
 local constants = require("src.constants")
+local version = require("version")
 
 local map
 local player
@@ -76,6 +77,10 @@ local print_debug_information = function(player)
   love.graphics.print("Player y scaled = " .. math.floor(player.y / constants.tile_size), 0, 30)
   love.graphics.print("Can i be here? = " .. tostring(map:canMove(player.x, player.y)), 0, 40)
   love.graphics.print("Inventory is shown = " .. tostring(inventory_screen.show_inventory), 0, 50)
+  love.graphics.print(
+    "Version " ..
+    tostring(version.major) ..
+    "." .. tostring(version.minor) .. "." .. tostring(version.patch) .. "." .. tostring(version.package), 0, 60)
 end
 
 function love.draw()
