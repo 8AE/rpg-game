@@ -5,10 +5,6 @@ local inventory_screen = {
 }
 
 local draw_inventory = function(inventory_to_show, x, y)
-  -- for _, item in ipairs(inventory_to_show) do
-  --   love.graphics.draw(item.image_sheet, item.icon_quad, x, y)
-  -- end
-
   for i = 0, number_of_items_to_show - 1, 1 do
     for j = 0, number_of_items_to_show - 1, 1 do
       local current_item = inventory_to_show[i + j + 1]

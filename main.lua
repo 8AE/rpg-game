@@ -66,7 +66,8 @@ function love.load(args)
   map = MapGenerator("data/image/texture_sheet.png", "data/map/level1_1")
   player = Player.new("data/image/characters/main-character.png", 7, 18)
   make_item("data/image/weapon_cells.png")
-
+  table.insert(player.inventory, example_item)
+  table.insert(player.inventory, example_item_2)
   love.update = standard_movement_update
 end
 
@@ -90,11 +91,13 @@ function love.draw()
   map:draw()
   -- map.debug_draw_tile(player.x, player.y)
   player:draw()
-  table.insert(player.inventory, example_item)
-  table.insert(player.inventory, example_item_2)
 
+  love.graphics.pop()
+
+  love.graphics.push()
+  love.graphics.scale(2, 2)
   if inventory_screen.show_inventory then
-    inventory_screen.draw(player.inventory, player.x, player.y)
+    inventory_screen.draw(player.inventory, love.window.getPosition(), love.window.getPosition())
   end
   love.graphics.pop()
 
