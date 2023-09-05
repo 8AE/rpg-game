@@ -5,13 +5,14 @@ local inventory_screen = {
 }
 
 local draw_inventory = function(inventory_to_show, x, y)
-  for i = 0, number_of_items_to_show - 1, 1 do
-    for j = 0, number_of_items_to_show - 1, 1 do
-      local current_item = inventory_to_show[i + j + 1]
+  -- current problem is we show the same item twice
+  for row = 0, number_of_items_to_show - 1, 1 do
+    for col = 0, number_of_items_to_show - 1, 1 do
+      local current_item = inventory_to_show[row + col + 1]
       if current_item ~= nil then
         love.graphics.draw(current_item.image_sheet, current_item.icon_quad,
-          x - (constants.tile_size * 3) + (i * constants.tile_size),
-          y - (constants.tile_size * 4) + (j * constants.tile_size))
+          x - (constants.tile_size * 3) + (row * constants.tile_size),
+          y - (constants.tile_size * 4) + (col * constants.tile_size))
       end
     end
   end

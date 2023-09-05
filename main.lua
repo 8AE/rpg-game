@@ -86,22 +86,21 @@ end
 
 function love.draw()
   love.graphics.push()
-  love.graphics.scale(2, 2)
+  love.graphics.scale(constants.zoom, constants.zoom)
   love.graphics.translate(-player.x + love.window.getPosition(), -player.y + love.window.getPosition())
   map:draw()
   -- map.debug_draw_tile(player.x, player.y)
   player:draw()
-
   love.graphics.pop()
 
   love.graphics.push()
-  love.graphics.scale(2, 2)
+  love.graphics.scale(constants.zoom, constants.zoom)
+  print_debug_information(player)
   if inventory_screen.show_inventory then
     inventory_screen.draw(player.inventory, love.window.getPosition(), love.window.getPosition())
   end
   love.graphics.pop()
 
-  print_debug_information(player)
 
   cute.draw(love.graphics)
 end
