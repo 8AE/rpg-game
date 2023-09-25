@@ -84,29 +84,37 @@ local print_debug_information = function(player)
     "." .. tostring(version.minor) .. "." .. tostring(version.patch) .. "." .. tostring(version.package), 0, 60)
 end
 
-function love.draw()
+local draw_main_screen = function()
   love.graphics.push()
   love.graphics.scale(constants.zoom, constants.zoom)
   love.graphics.translate(-player.x + love.window.getPosition(), -player.y + love.window.getPosition())
   map:draw()
-  -- map.debug_draw_tile(player.x, player.y)
   player:draw()
   love.graphics.pop()
+end
 
+local draw_debug_content = function()
   love.graphics.push()
   love.graphics.scale(constants.zoom, constants.zoom)
   print_debug_information(player)
   if inventory_screen.show_inventory then
     inventory_screen.draw(player.inventory, love.window.getPosition(), love.window.getPosition())
   end
+  -- map.debug_draw_tile(player.x, player.y)
   love.graphics.pop()
+end
 
+function love.draw()
+  draw_main_screen()
+  draw_debug_content()
 
   cute.draw(love.graphics)
 end
 
 love.keypressed = function(key)
   cute.keypressed(key)
+  inventory_screen.keypressed(key)
+
   if key == 'i' then
     inventory_screen.show_inventory = not inventory_screen.show_inventory
     if inventory_screen.show_inventory then
