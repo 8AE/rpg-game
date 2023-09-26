@@ -56,18 +56,35 @@ local draw_main_screen = function(x, y)
   love.graphics.pop()
 end
 
+local convert_to_inventory_grid = function(inventory_to_show)
+  local new_inventory = {}
+  local index = 1
+  for i = 1, number_of_items_to_show do
+    new_inventory[i] = {} -- Create a new row
+    for j = 1, number_of_items_to_show do
+      if index <= #inventory_to_show then
+        new_inventory[i][j] = inventory_to_show[index]
+        index = index + 1
+      else
+        new_inventory[i][j] = nil -- Fill with nil if no more elements in the 1D table
+      end
+    end
+  end
+  return new_inventory
+end
+
 local draw_item_information = function(inventory_to_show, x, y)
   love.graphics.print("Inventory", x - (constants.tile_size * 3), y - (constants.tile_size * 5))
   love.graphics.print("Item", x + (constants.tile_size * 3), y - (constants.tile_size * 5))
   love.graphics.print("Description", x + (constants.tile_size * 3), y - (constants.tile_size * 3))
 
-  -- hah this is bugged but ill look at it later
-  if inventory_to_show[current_item_x + current_item_y + 1] then
-    love.graphics.print(tostring(inventory_to_show[current_item_x + current_item_y + 1].name),
+  local grid_inventory = convert_to_inventory_grid(inventory_to_show)
+  if grid_inventory[current_item_y + 1][current_item_x + 1] ~= nil then
+    love.graphics.print(tostring(grid_inventory[current_item_y + 1][current_item_x + 1].name),
       x + (constants.tile_size * 3),
       y - (constants.tile_size * 4))
 
-    love.graphics.print(tostring(inventory_to_show[current_item_x + current_item_y + 1].description),
+    love.graphics.print(tostring(grid_inventory[current_item_y + 1][current_item_x + 1].description),
       x + (constants.tile_size * 3),
       y - (constants.tile_size * 2))
   end
