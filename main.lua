@@ -8,10 +8,16 @@ local Player = require("src.player")
 local constants = require("src.constants")
 local version = require("version")
 
-local map
 local player
 local example_item
 local example_item_2
+
+local map
+local all_maps = {
+  MapGenerator("data/image/texture_sheet.png", "data/map/level1_1"),
+  MapGenerator("data/image/texture_sheet.png", "data/map/level1_2")
+}
+local current_map_index = 1
 
 if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
   local lldebugger = require "lldebugger"
@@ -27,6 +33,15 @@ local make_item = function(image_path)
   local image = love.graphics.newImage(image_path)
   example_item = Item.new(image, quad_tile(image, 0, 0), "example", "this is an example")
   example_item_2 = Item.new(image, quad_tile(image, 0, 1), "example 2", "this is an example 2")
+end
+
+local cycle_through_maps = function()
+  if current_map_index >= #all_maps then
+    current_map_index = 1
+  else
+    current_map_index = current_map_index + 1
+  end
+  map = all_maps[current_map_index]
 end
 
 local standard_movement_update = function(dt)
@@ -60,13 +75,9 @@ local standard_movement_update = function(dt)
   end
 end
 
-local inventory_update = function(dt)
-
-end
-
 function love.load(args)
   cute.go(args)
-  map = MapGenerator("data/image/texture_sheet.png", "data/map/level1_1")
+  map = all_maps[1]
   player = Player.new("data/image/characters/main-character.png", 7, 18)
   make_item("data/image/weapon_cells.png")
   table.insert(player.inventory, example_item)
@@ -151,5 +162,7 @@ love.keypressed = function(key)
 
   if key == 'i' then
     inventory_screen.show_inventory = not inventory_screen.show_inventory
+  elseif key == 'tab' then
+    cycle_through_maps()
   end
 end
