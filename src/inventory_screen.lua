@@ -1,7 +1,10 @@
 local constants = require("src.constants")
+
 local number_of_items_to_show = 5
 local current_item_x = 0
 local current_item_y = 0
+local selected_item = nil
+local current_inventory = {}
 local inventory_screen = {
   show_inventory = false
 }
@@ -112,6 +115,20 @@ local change_cursor_value_to = function(new_value)
   return new_value
 end
 
+local select_current_item = function()
+  local grid_inventory = convert_to_inventory_grid(current_inventory)
+  current_item = grid_inventory[current_item_y + 1][current_item_x + 1]
+  if current_item ~= nil and selected_item ~= current_item then
+    selected_item = grid_inventory[current_item_y + 1][current_item_x + 1]
+  else
+    selected_item = nil
+  end
+end
+
+inventory_screen.get_selected_item = function()
+  return selected_item
+end
+
 inventory_screen.keypressed = function(key)
   if inventory_screen.show_inventory then
     if key == 'right' then
@@ -122,16 +139,24 @@ inventory_screen.keypressed = function(key)
       current_item_y = change_cursor_value_to(current_item_y + 1)
     elseif key == 'up' then
       current_item_y = change_cursor_value_to(current_item_y - 1)
+    elseif key == 'return' then
+      select_current_item()
     end
   end
 end
 
-inventory_screen.draw = function(inventory_to_show, x, y)
+inventory_screen.inventory_update = function(dt, _inventory_to_show)
+  if inventory_screen.show_inventory then
+    current_inventory = _inventory_to_show
+  end
+end
+
+inventory_screen.draw = function(x, y)
   draw_main_screen(x, y)
   draw_item_outline_boxed(x, y)
-  draw_inventory(inventory_to_show, x, y)
-  draw_item_information(inventory_to_show, x, y)
-  draw_cursor(inventory_to_show, x, y)
+  draw_inventory(current_inventory, x, y)
+  draw_item_information(current_inventory, x, y)
+  draw_cursor(current_inventory, x, y)
 
   -- TODO: draw_trash(inventory_to_show, x, y)
 end

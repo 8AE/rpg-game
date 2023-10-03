@@ -103,6 +103,14 @@ function Player:update_direction_if_not_moving(new_direction)
   end
 end
 
+function Player:get_scaled_x()
+  return math.floor(self.x / constants.tile_size)
+end
+
+function Player:get_scaled_y()
+  return math.floor(self.y / constants.tile_size)
+end
+
 function player.new(image_path, starting_x, starting_y)
   local self = {}
   self.x = starting_x * constants.tile_size
@@ -113,6 +121,7 @@ function player.new(image_path, starting_x, starting_y)
   self.target_x = 0
   self.target_y = 0
   self.inventory = {}
+  self.equiped_item = nil
   self.image = love.graphics.newImage(image_path)
   self.sprites = generate_sprites(self.image)
   setmetatable(self, { __index = Player })

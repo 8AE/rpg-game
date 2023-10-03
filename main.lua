@@ -2,6 +2,7 @@ local cute = require("lib.cute.cute")
 local quad_tile = require("src.quad_tile")
 local Item = require("src.item")
 local inventory_screen = require("src.inventory_screen")
+local hud = require("src.hud")
 local MapGenerator = require("src/MapGenerator")
 local Player = require("src.player")
 local constants = require("src.constants")
@@ -29,30 +30,32 @@ local make_item = function(image_path)
 end
 
 local standard_movement_update = function(dt)
-  player:update_position_based_on_direction()
+  if not inventory_screen.show_inventory then
+    player:update_position_based_on_direction()
 
-  if love.keyboard.isDown("up") then
-    player:update_direction_if_not_moving('up')
-    if map:canMove(player.x, player.y - constants.tile_size) then
-      player:move(player.x, player.y - constants.tile_size)
+    if love.keyboard.isDown("up") then
+      player:update_direction_if_not_moving('up')
+      if map:canMove(player.x, player.y - constants.tile_size) then
+        player:move(player.x, player.y - constants.tile_size)
+      end
     end
-  end
-  if love.keyboard.isDown("down") then
-    player:update_direction_if_not_moving('down')
-    if map:canMove(player.x, player.y + player.speed, player.direction) then
-      player:move(player.x, player.y + constants.tile_size)
+    if love.keyboard.isDown("down") then
+      player:update_direction_if_not_moving('down')
+      if map:canMove(player.x, player.y + player.speed, player.direction) then
+        player:move(player.x, player.y + constants.tile_size)
+      end
     end
-  end
-  if love.keyboard.isDown("left") then
-    player:update_direction_if_not_moving('left')
-    if map:canMove(player.x - constants.tile_size, player.y) then
-      player:move(player.x - constants.tile_size, player.y)
+    if love.keyboard.isDown("left") then
+      player:update_direction_if_not_moving('left')
+      if map:canMove(player.x - constants.tile_size, player.y) then
+        player:move(player.x - constants.tile_size, player.y)
+      end
     end
-  end
-  if love.keyboard.isDown("right") then
-    player:update_direction_if_not_moving('right')
-    if map:canMove(player.x + player.speed, player.y, player.direction) then
-      player:move(player.x + constants.tile_size, player.y)
+    if love.keyboard.isDown("right") then
+      player:update_direction_if_not_moving('right')
+      if map:canMove(player.x + player.speed, player.y, player.direction) then
+        player:move(player.x + constants.tile_size, player.y)
+      end
     end
   end
 end
@@ -68,7 +71,6 @@ function love.load(args)
   make_item("data/image/weapon_cells.png")
   table.insert(player.inventory, example_item)
   table.insert(player.inventory, example_item_2)
-  love.update = standard_movement_update
 end
 
 local print_debug_information = function(player)
@@ -86,10 +88,32 @@ end
 
 local draw_main_screen = function()
   love.graphics.push()
+
   love.graphics.scale(constants.zoom, constants.zoom)
   love.graphics.translate(-player.x + love.window.getPosition(), -player.y + love.window.getPosition())
   map:draw()
   player:draw()
+
+  love.graphics.pop()
+end
+
+local draw_hud = function()
+  love.graphics.push()
+  love.graphics.scale(constants.zoom, constants.zoom)
+
+  hud.draw(player.equiped_item, 100, 0, 0)
+
+  love.graphics.pop()
+end
+
+local draw_inventory = function()
+  love.graphics.push()
+  love.graphics.scale(constants.zoom, constants.zoom)
+
+
+  if inventory_screen.show_inventory then
+    inventory_screen.draw(love.window.getPosition(), love.window.getPosition())
+  end
   love.graphics.pop()
 end
 
@@ -97,18 +121,28 @@ local draw_debug_content = function()
   love.graphics.push()
   love.graphics.scale(constants.zoom, constants.zoom)
   print_debug_information(player)
-  if inventory_screen.show_inventory then
-    inventory_screen.draw(player.inventory, love.window.getPosition(), love.window.getPosition())
-  end
+
   -- map.debug_draw_tile(player.x, player.y)
   love.graphics.pop()
 end
 
 function love.draw()
   draw_main_screen()
-  draw_debug_content()
+  draw_hud()
+  draw_inventory()
+  -- draw_debug_content()
 
   cute.draw(love.graphics)
+end
+
+local player_based_update = function(dt)
+  player.equiped_item = inventory_screen.get_selected_item()
+end
+
+function love.update(dt)
+  standard_movement_update(dt)
+  inventory_screen.inventory_update(dt, player.inventory)
+  player_based_update(dt)
 end
 
 love.keypressed = function(key)
@@ -117,10 +151,5 @@ love.keypressed = function(key)
 
   if key == 'i' then
     inventory_screen.show_inventory = not inventory_screen.show_inventory
-    if inventory_screen.show_inventory then
-      love.update = inventory_update
-    else
-      love.update = standard_movement_update
-    end
   end
 end
