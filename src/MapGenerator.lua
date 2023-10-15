@@ -1,4 +1,5 @@
 local constants = require("src.constants")
+local json = require("src.json.love_json")
 
 local function parse_file_by_comma(filePath)
   local content, size = love.filesystem.read(filePath) -- Read the file using Love2D's Filesystem module
@@ -77,12 +78,13 @@ local function tile_sheet_to_tile_map(image)
   return tile_map
 end
 
-return function(image_path, map_path)
+return function(image_path, map_path, event_path)
   local MapGenerator = {}
   local image = love.graphics.newImage(image_path)
   local tile_map = tile_sheet_to_tile_map(image)
   local map_width_and_height, parsed_map_data = parse_file_by_comma(map_path .. '.map')
   local _, parsed_wall_map_data = parse_file_by_comma(map_path .. '.cmap')
+  local event_data = json.decode_json(event_path)
 
   function MapGenerator:draw()
     love.graphics.push()

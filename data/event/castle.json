@@ -1,0 +1,31 @@
+{
+    "characters": [
+        {
+            "X": 8,
+            "Y": 8,
+            "chip_number": 3,
+            "default_direction_facing": 3,
+            "can_they_move": 1,
+            "can_they_be_damaged": 1,
+            "attack_type": 2,
+            "messages": {
+                "a": "I AM WAITING FOR YOU",
+                "b": "HELLO!",
+                "c": "MESSAGE3"
+            }
+        },
+        {
+            "X": 10,
+            "Y": 12,
+            "chip_number": 1,
+            "default_direction_facing": 1,
+            "can_they_move": 1,
+            "can_they_be_damaged": 0,
+            "attack_type": 1,
+            "messages": {
+                "a": "ENEMY APPROACHING",
+                "c": "INTRUDER ALERT!"
+            }
+        }
+    ]
+}

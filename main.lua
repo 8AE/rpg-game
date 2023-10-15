@@ -14,8 +14,10 @@ local example_item_2
 
 local map
 local all_maps = {
-  MapGenerator("data/image/texture_sheet.png", "data/map/level1_1"),
-  MapGenerator("data/image/texture_sheet.png", "data/map/level1_2")
+  MapGenerator("data/image/texture_sheet.png", constants.base_map_path .. "level1_1",
+    constants.base_event_path .. 'level1_1'),
+  MapGenerator("data/image/texture_sheet.png", constants.base_map_path .. "level1_2",
+    constants.base_event_path .. 'level1_2')
 }
 local current_map_index = 1
 

@@ -1,3 +1,6 @@
 [submodule "lib/cute"]
 	path = lib/cute
 	url = https://github.com/gtrogers/Cute.git
+[submodule "lib/json"]
+	path = lib/json
+	url = https://github.com/rxi/json.lua.git
