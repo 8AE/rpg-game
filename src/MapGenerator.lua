@@ -93,7 +93,9 @@ return function(image_path, map_path, event_path, teleportation_queue, player, s
   local event_data = json.decode_json(event_path)
 
   player.x = number_scaling.scaled_to_real(start_x)
+  player.target_x = player.x
   player.y = number_scaling.scaled_to_real(start_y)
+  player.target_y = player.y
 
   local tele = event_data['move'][1]
   local example_t = Teleport.new(teleportation_queue, tele.x, tele.y, tele.next_map, tele.next_x, tele.next_y)
