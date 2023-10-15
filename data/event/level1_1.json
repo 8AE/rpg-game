@@ -1,8 +1,8 @@
 {
     "move": [
         {
-            "x": 17,
-            "y": 17,
+            "x": 11,
+            "y": 4,
             "next_map": "level1_2",
             "next_x": 13,
             "next_y": 26

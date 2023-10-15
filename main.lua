@@ -15,9 +15,9 @@ local example_item_2
 local map
 local all_maps = {
   MapGenerator("data/image/texture_sheet.png", constants.base_map_path .. "level1_1",
-    constants.base_event_path .. 'level1_1'),
+    constants.base_event_path .. 'level1_1.json'),
   MapGenerator("data/image/texture_sheet.png", constants.base_map_path .. "level1_2",
-    constants.base_event_path .. 'level1_2')
+    constants.base_event_path .. 'level1_2.json')
 }
 local current_map_index = 1
 
@@ -143,7 +143,7 @@ function love.draw()
   draw_main_screen()
   draw_hud()
   draw_inventory()
-  -- draw_debug_content()
+  draw_debug_content()
 
   cute.draw(love.graphics)
 end
@@ -152,10 +152,15 @@ local player_based_update = function(dt)
   player.equiped_item = inventory_screen.get_selected_item()
 end
 
+local map_update = function(dt)
+  map:update(dt, player:get_scaled_x(), player:get_scaled_y())
+end
+
 function love.update(dt)
   standard_movement_update(dt)
   inventory_screen.inventory_update(dt, player.inventory)
   player_based_update(dt)
+  map_update(dt)
 end
 
 love.keypressed = function(key)

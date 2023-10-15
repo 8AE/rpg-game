@@ -1,4 +1,5 @@
 local constants = require("src.constants")
+local number_scaling = require("src.util.number_scaling")
 local player = {}
 local Player = {}
 
@@ -104,11 +105,11 @@ function Player:update_direction_if_not_moving(new_direction)
 end
 
 function Player:get_scaled_x()
-  return math.floor(self.x / constants.tile_size)
+  return number_scaling.real_to_scaled(self.x)
 end
 
 function Player:get_scaled_y()
-  return math.floor(self.y / constants.tile_size)
+  return number_scaling.real_to_scaled(self.y)
 end
 
 function player.new(image_path, starting_x, starting_y)
