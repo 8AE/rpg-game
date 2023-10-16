@@ -4,11 +4,13 @@ local teleport = {}
 local Teleport = {}
 
 function Teleport:draw()
+  love.graphics.push()
   love.graphics.setColor(0, 0, 255)
   love.graphics.rectangle("line", number_scale.scaled_to_real(self.starting_x),
     number_scale.scaled_to_real(self.starting_y),
     constants.tile_size, constants.tile_size)
   love.graphics.reset()
+  love.graphics.pop()
 end
 
 function Teleport:update(dt, scaled_x, scaled_y)

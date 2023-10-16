@@ -4,8 +4,50 @@
             "x": 11,
             "y": 4,
             "next_map": "level1_2",
+            "next_x": 7,
+            "next_y": 28
+        },
+        {
+            "x": 12,
+            "y": 4,
+            "next_map": "level1_2",
+            "next_x": 8,
+            "next_y": 28
+        },
+        {
+            "x": 13,
+            "y": 4,
+            "next_map": "level1_2",
+            "next_x": 9,
+            "next_y": 28
+        },
+        {
+            "x": 14,
+            "y": 4,
+            "next_map": "level1_2",
+            "next_x": 10,
+            "next_y": 28
+        },
+        {
+            "x": 15,
+            "y": 4,
+            "next_map": "level1_2",
+            "next_x": 11,
+            "next_y": 28
+        },
+        {
+            "x": 16,
+            "y": 4,
+            "next_map": "level1_2",
+            "next_x": 12,
+            "next_y": 28
+        },
+        {
+            "x": 17,
+            "y": 4,
+            "next_map": "level1_2",
             "next_x": 13,
-            "next_y": 26
+            "next_y": 28
         }
     ]
 }
