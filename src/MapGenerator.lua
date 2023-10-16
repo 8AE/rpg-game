@@ -1,7 +1,6 @@
 local constants = require("src.constants")
-local json = require("src.json.love_json")
-local Teleport = require("src.event.teleport")
 local number_scaling = require("src.util.number_scaling")
+local Event_Manager = require("src.event.event_manager")
 
 local function parse_file_by_comma(filePath)
   local content, size = love.filesystem.read(filePath) -- Read the file using Love2D's Filesystem module
@@ -80,31 +79,24 @@ local function tile_sheet_to_tile_map(image)
   return tile_map
 end
 
-local draw_events = function(event)
-  event:draw()
-end
-
 return function(image_path, map_path, event_path, teleportation_queue, player, start_x, start_y)
   local MapGenerator = {}
   local image = love.graphics.newImage(image_path)
   local tile_map = tile_sheet_to_tile_map(image)
   local map_width_and_height, parsed_map_data = parse_file_by_comma(map_path .. '.map')
   local _, parsed_wall_map_data = parse_file_by_comma(map_path .. '.cmap')
-  local event_data = json.decode_json(event_path)
+  local event_manager = Event_Manager.new(teleportation_queue, event_path)
 
   player.x = number_scaling.scaled_to_real(start_x)
   player.target_x = player.x
   player.y = number_scaling.scaled_to_real(start_y)
   player.target_y = player.y
 
-  local tele = event_data['move'][1]
-  local example_t = Teleport.new(teleportation_queue, tele.x, tele.y, tele.next_map, tele.next_x, tele.next_y)
-
   function MapGenerator:draw()
     love.graphics.push()
     draw_map(image, map_width_and_height, parsed_map_data, tile_map)
     -- draw_debug_map(map_width_and_height, parsed_wall_map_data)
-    draw_events(example_t)
+    event_manager:draw()
     love.graphics.pop()
   end
 
@@ -130,7 +122,7 @@ return function(image_path, map_path, event_path, teleportation_queue, player, s
   end
 
   function MapGenerator:update(dt, player_scaled_x, player_scaled_y)
-    example_t:update(dt, player_scaled_x, player_scaled_y)
+    event_manager:update(dt, player_scaled_x, player_scaled_y)
   end
 
   return MapGenerator
