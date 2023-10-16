@@ -14,6 +14,9 @@ local player
 local example_item
 local example_item_2
 
+local starting_x = 17
+local starting_y = 21
+
 if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
   local lldebugger = require "lldebugger"
   lldebugger.start()
@@ -63,8 +66,8 @@ end
 
 function love.load(args)
   cute.go(args)
-  player = Player.new("data/image/characters/main-character.png", 7, 18)
-  teleportation_queue.load('level1_1', 7, 8)
+  player = Player.new("data/image/characters/main-character.png")
+  teleportation_queue.load('level1_1', starting_x, starting_y)
   map_manager.load(teleportation_queue, player)
   make_item("data/image/weapon_cells.png")
   table.insert(player.inventory, example_item)

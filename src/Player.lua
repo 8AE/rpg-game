@@ -112,10 +112,10 @@ function Player:get_scaled_y()
   return number_scaling.real_to_scaled(self.y)
 end
 
-function player.new(image_path, starting_x, starting_y)
+function player.new(image_path)
   local self = {}
-  self.x = starting_x * constants.tile_size
-  self.y = starting_y * constants.tile_size
+  self.x = 0
+  self.y = 0
   self.direction = 'down'
   self.moving = false
   self.speed = 1.25
