@@ -9,6 +9,7 @@ local constants = require("src.constants")
 local version = require("version")
 local teleportation_queue = require("src.event.teleportation_queue")
 local map_manager = require("src.map_manager")
+local rpg_print = require('src.font.rpg_print')
 
 local player
 local example_item
@@ -75,16 +76,16 @@ function love.load(args)
 end
 
 local print_debug_information = function(player)
-  love.graphics.print("Player x = " .. player.x, 0, 0)
-  love.graphics.print("Player x scaled = " .. math.floor(player.x / constants.tile_size), 0, 10)
-  love.graphics.print("Player y = " .. player.y, 0, 20)
-  love.graphics.print("Player y scaled = " .. math.floor(player.y / constants.tile_size), 0, 30)
-  love.graphics.print("Can i be here? = " .. tostring(map_manager.current_map:canMove(player.x, player.y)), 0, 40)
-  love.graphics.print("Inventory is shown = " .. tostring(inventory_screen.show_inventory), 0, 50)
-  love.graphics.print(
+  rpg_print("Player x = " .. player.x, 0, 0)
+  rpg_print("Player x scaled = " .. math.floor(player.x / constants.tile_size), 0, 20)
+  rpg_print("Player y = " .. player.y, 0, 40)
+  rpg_print("Player y scaled = " .. math.floor(player.y / constants.tile_size), 0, 60)
+  rpg_print("Can i be here? = " .. tostring(map_manager.current_map:canMove(player.x, player.y)), 0, 80)
+  rpg_print("Inventory is shown = " .. tostring(inventory_screen.show_inventory), 0, 100)
+  rpg_print(
     "Version " ..
     tostring(version.major) ..
-    "." .. tostring(version.minor) .. "." .. tostring(version.patch) .. "." .. tostring(version.package), 0, 60)
+    "." .. tostring(version.minor) .. "." .. tostring(version.patch) .. "." .. tostring(version.package), 0, 120)
 end
 
 local draw_main_screen = function()
@@ -131,7 +132,7 @@ function love.draw()
   draw_main_screen()
   draw_hud()
   draw_inventory()
-  draw_debug_content()
+  -- draw_debug_content()
 
   cute.draw(love.graphics)
 end

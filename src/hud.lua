@@ -1,5 +1,6 @@
 local constants = require("src.constants")
 local hud = {}
+local rpg_print = require('src.font.rpg_print')
 
 local equiped_item_box_x = 10
 local equiped_item_box_y = 10
@@ -33,7 +34,7 @@ local draw_health = function(health, x, y)
     love.graphics.push()
     love.graphics.setColor(255, 0, 0)
 
-    love.graphics.print("Health: " .. tostring(health), x + (health_text_x), y + health_text_y)
+    rpg_print("Health: " .. tostring(health), x + (health_text_x), y + health_text_y)
 
     love.graphics.reset()
     love.graphics.pop()

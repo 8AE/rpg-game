@@ -29,12 +29,6 @@ local parse_event = function(queue, json_data)
   return events
 end
 
-local print_parsed_events = function(parsed_events)
-  for _, events in ipairs(parsed_events) do
-    print(events)
-  end
-end
-
 function event_manager.new(teleportation_queue, event_path)
   local self = {}
   self.teleportation_queue = teleportation_queue

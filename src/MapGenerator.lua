@@ -1,6 +1,7 @@
 local constants = require("src.constants")
 local number_scaling = require("src.util.number_scaling")
 local Event_Manager = require("src.event.event_manager")
+local rpg_print = require('src.font.rpg_print')
 
 local function parse_file_by_comma(filePath)
   local content, size = love.filesystem.read(filePath) -- Read the file using Love2D's Filesystem module
@@ -59,7 +60,7 @@ local function draw_debug_map(map_width_and_height, map_data)
       end
       love.graphics.rectangle("line", (j - constants.legacy_offset) * constants.tile_size, (i - 1) * constants.tile_size,
         constants.tile_size, constants.tile_size)
-      love.graphics.print(tostring(j - constants.legacy_offset) .. "," .. tostring(i - 1), (j - 1) * constants.tile_size,
+      rpg_print(tostring(j - constants.legacy_offset) .. "," .. tostring(i - 1), (j - 1) * constants.tile_size,
         (i - constants.legacy_offset) * constants.tile_size)
     end
   end

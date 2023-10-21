@@ -1,4 +1,5 @@
 local constants = require("src.constants")
+local rpg_print = require('src.font.rpg_print')
 
 local number_of_items_to_show = 5
 local current_item_x = 0
@@ -77,17 +78,17 @@ local convert_to_inventory_grid = function(inventory_to_show)
 end
 
 local draw_item_information = function(inventory_to_show, x, y)
-  love.graphics.print("Inventory", x - (constants.tile_size * 3), y - (constants.tile_size * 5))
-  love.graphics.print("Item", x + (constants.tile_size * 3), y - (constants.tile_size * 5))
-  love.graphics.print("Description", x + (constants.tile_size * 3), y - (constants.tile_size * 3))
+  rpg_print("Inventory", x - (constants.tile_size * 3), y - (constants.tile_size * 5))
+  rpg_print("Item", x + (constants.tile_size * 3), y - (constants.tile_size * 5))
+  rpg_print("Description", x + (constants.tile_size * 3), y - (constants.tile_size * 3))
 
   local grid_inventory = convert_to_inventory_grid(inventory_to_show)
   if grid_inventory[current_item_y + 1][current_item_x + 1] ~= nil then
-    love.graphics.print(tostring(grid_inventory[current_item_y + 1][current_item_x + 1].name),
+    rpg_print(tostring(grid_inventory[current_item_y + 1][current_item_x + 1].name),
       x + (constants.tile_size * 3),
       y - (constants.tile_size * 4))
 
-    love.graphics.print(tostring(grid_inventory[current_item_y + 1][current_item_x + 1].description),
+    rpg_print(tostring(grid_inventory[current_item_y + 1][current_item_x + 1].description),
       x + (constants.tile_size * 3),
       y - (constants.tile_size * 2))
   end
