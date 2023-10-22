@@ -10,7 +10,7 @@ local debug_draw_all_sprites = function(image, sprites)
 end
 
 local function sprite_based_on_direction(player, sprites)
-  temp_sprite = sprites[1]
+  local temp_sprite = sprites[1]
   if player.direction == 'up' then
     temp_sprite = sprites[11]
   elseif player.direction == 'down' then

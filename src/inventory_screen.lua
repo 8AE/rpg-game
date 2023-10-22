@@ -123,7 +123,7 @@ end
 
 local select_current_item = function()
   local grid_inventory = convert_to_inventory_grid(current_inventory)
-  current_item = grid_inventory[current_item_y + 1][current_item_x + 1]
+  local current_item = grid_inventory[current_item_y + 1][current_item_x + 1]
   if current_item ~= nil and selected_item ~= current_item then
     selected_item = grid_inventory[current_item_y + 1][current_item_x + 1]
   else
