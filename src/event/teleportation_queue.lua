@@ -1,4 +1,4 @@
-local constants = require("src.constants")
+local constants = require("src.util.constants")
 local teleportation_queue = {}
 
 local queue_is_empty = function()

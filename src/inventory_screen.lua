@@ -1,4 +1,4 @@
-local constants = require("src.constants")
+local constants = require("src.util.constants")
 local rpg_print = require('src.font.rpg_print')
 
 local number_of_items_to_show = 5

@@ -1,4 +1,4 @@
-local constants = require("src.constants")
+local constants = require("src.util.constants")
 local number_scaling = {}
 
 number_scaling.scaled_to_real = function(scaled_number)

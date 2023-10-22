@@ -1,4 +1,4 @@
-local constants = require("src.constants")
+local constants = require("src.util.constants")
 local number_scaling = require("src.util.number_scaling")
 local Event_Manager = require("src.event.event_manager")
 local rpg_print = require('src.font.rpg_print')

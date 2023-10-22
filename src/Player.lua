@@ -1,4 +1,4 @@
-local constants = require("src.constants")
+local constants = require("src.util.constants")
 local number_scaling = require("src.util.number_scaling")
 local player = {}
 local Player = {}

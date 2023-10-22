@@ -1,4 +1,4 @@
-local constants = require("src.constants")
+local constants = require("src.util.constants")
 local MapGenerator = require("src/MapGenerator")
 
 local map_manager = {}
