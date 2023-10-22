@@ -92,7 +92,7 @@ local draw_main_screen = function()
   love.graphics.push()
 
   love.graphics.scale(constants.zoom, constants.zoom)
-  love.graphics.translate(-player.x + love.window.getPosition(), -player.y + love.window.getPosition())
+  love.graphics.translate(-player.x + (love.graphics.getWidth() / 4), -player.y + (love.graphics.getHeight() / 4))
   map_manager.current_map:draw()
   player:draw()
 
@@ -112,10 +112,12 @@ local draw_inventory = function()
   love.graphics.push()
   love.graphics.scale(constants.zoom, constants.zoom)
 
-
   if inventory_screen.show_inventory then
-    inventory_screen.draw(love.window.getPosition(), love.window.getPosition())
+    inventory_screen.draw(
+      love.graphics.getWidth() / (2.5 * constants.zoom),
+      love.graphics.getHeight() / (1.5 * constants.zoom))
   end
+
   love.graphics.pop()
 end
 
@@ -128,15 +130,6 @@ local draw_debug_content = function()
   love.graphics.pop()
 end
 
-function love.draw()
-  draw_main_screen()
-  draw_hud()
-  draw_inventory()
-  -- draw_debug_content()
-
-  cute.draw(love.graphics)
-end
-
 local player_based_update = function(dt)
   player.equiped_item = inventory_screen.get_selected_item()
 end
@@ -144,6 +137,15 @@ end
 local map_update = function(dt)
   map_manager.current_map:update(dt, player:get_scaled_x(), player:get_scaled_y())
   map_manager.update(dt)
+end
+
+function love.draw()
+  draw_main_screen()
+  draw_hud()
+  draw_inventory()
+  -- draw_debug_content()
+
+  cute.draw(love.graphics)
 end
 
 function love.update(dt)
