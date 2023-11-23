@@ -9,11 +9,14 @@ local teleportation_queue = require("src.event.teleportation_queue")
 local map_manager = require("src.map_manager")
 local rpg_print = require('src.font.rpg_print')
 
+local Dialog_Box = require("src.dialog.dialog_box")
+
 local app = {}
 
 local player
 local example_item
 local example_item_2
+local example_dialog
 
 local starting_x = 17
 local starting_y = 21
@@ -62,6 +65,8 @@ function app.load(args)
   make_item("data/image/weapon_cells.png")
   table.insert(player.inventory, example_item)
   table.insert(player.inventory, example_item_2)
+  example_dialog = Dialog_Box.new("THIS IS TEST BOX", love.graphics.getWidth() / (8 * constants.zoom),
+    love.graphics.getHeight() / (1.5 * constants.zoom))
 end
 
 local print_debug_information = function(player)
@@ -80,7 +85,6 @@ end
 local draw_main_screen = function()
   love.graphics.push()
 
-  love.graphics.scale(constants.zoom, constants.zoom)
   love.graphics.translate(-player.x + (love.graphics.getWidth() / 4), -player.y + (love.graphics.getHeight() / 4))
   map_manager.current_map:draw()
   player:draw()
@@ -90,7 +94,6 @@ end
 
 local draw_hud = function()
   love.graphics.push()
-  love.graphics.scale(constants.zoom, constants.zoom)
 
   hud.draw(player.equiped_item, 100, 0, 0)
 
@@ -99,7 +102,6 @@ end
 
 local draw_inventory = function()
   love.graphics.push()
-  love.graphics.scale(constants.zoom, constants.zoom)
 
   if inventory_screen.show_inventory then
     inventory_screen.draw(
@@ -112,7 +114,6 @@ end
 
 local draw_debug_content = function()
   love.graphics.push()
-  love.graphics.scale(constants.zoom, constants.zoom)
   print_debug_information(player)
 
   -- map_manager.current_map.debug_draw_tile(player.x, player.y)
@@ -129,9 +130,16 @@ local map_update = function(dt)
 end
 
 function app.draw()
+  love.graphics.push()
+  love.graphics.scale(constants.zoom, constants.zoom)
+
   draw_main_screen()
   draw_hud()
   draw_inventory()
+  example_dialog:draw()
+
+  love.graphics.pop()
+
   -- draw_debug_content()
 end
 
