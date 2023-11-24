@@ -65,7 +65,10 @@ function app.load(args)
   make_item("data/image/weapon_cells.png")
   table.insert(player.inventory, example_item)
   table.insert(player.inventory, example_item_2)
-  example_dialog = Dialog_Box.new("THIS IS TEST BOX", love.graphics.getWidth() / (8 * constants.zoom),
+  example_dialog = Dialog_Box.new(
+    { "TEST BOXS ARE REALLY FUN DID U KNOW THE FIRST BOX EVER CREATED WAS A TEST BOX",
+      "this is a second box" },
+    love.graphics.getWidth() / (8 * constants.zoom),
     love.graphics.getHeight() / (1.5 * constants.zoom))
 end
 
@@ -153,6 +156,7 @@ end
 
 app.keypressed = function(key)
   inventory_screen.keypressed(key)
+  example_dialog:keypressed(key)
 
   if key == 'i' then
     inventory_screen.show_inventory = not inventory_screen.show_inventory

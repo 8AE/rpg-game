@@ -22,10 +22,10 @@
             "can_they_move": 1,
             "can_they_be_damaged": 0,
             "attack_type": 1,
-            "messages": {
-                "a": "ENEMY APPROACHING",
-                "c": "INTRUDER ALERT!"
-            }
+            "messages": [
+                "ENEMY APPROACHING",
+                "INTRUDER ALERT!"
+            ]
         }
     ]
 }

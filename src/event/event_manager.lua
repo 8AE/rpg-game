@@ -1,5 +1,6 @@
 local json = require("src.json.love_json")
 local Teleport = require("src.event.teleport")
+local Npc = require('src.character.npc')
 
 local event_manager = {}
 local Event_Manager = {}
@@ -22,6 +23,18 @@ local parse_event = function(queue, json_data)
     if event_type == 'move' then
       for _, data in ipairs(event_data) do
         table.insert(events, Teleport.new(queue, data.x, data.y, data.next_map, data.next_x, data.next_y))
+      end
+    elseif event_type == 'characters' then
+      for _, data in ipairs(event_data) do
+        table.insert(events,
+          Npc.new(
+            data.image,
+            data.x,
+            data.y,
+            data.default_direction_facing,
+            data.can_they_move,
+            data.can_they_be_damaged,
+            data.messages))
       end
     end
   end

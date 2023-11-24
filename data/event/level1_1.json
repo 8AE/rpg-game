@@ -49,5 +49,20 @@
             "next_x": 13,
             "next_y": 28
         }
+    ],
+    "characters": [
+        {
+            "x": 14,
+            "y": 21,
+            "image": "characters/main-character.png",
+            "default_direction_facing": "down",
+            "can_they_move": false,
+            "can_they_be_damaged": false,
+            "messages": [
+                "I AM WAITING FOR YOU",
+                "HELLO!",
+                "MESSAGE3"
+            ]
+        }
     ]
 }
