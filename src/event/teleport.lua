@@ -23,6 +23,10 @@ function Teleport:update(dt, scaled_x, scaled_y)
   end
 end
 
+function Teleport:can_move()
+  return true
+end
+
 function teleport.new(teleportation_queue, starting_x, starting_y, next_map_substring, next_x, next_y)
   local self = {}
   self.teleportation_queue = teleportation_queue

@@ -17,6 +17,17 @@ function Event_Manager:draw()
   end
 end
 
+function Event_Manager:can_move(target_x, target_y, player_direction)
+  local state
+  for _, events in ipairs(self.parsed_events) do
+    state = events:can_move(target_x, target_y, player_direction)
+    if not state then
+      return state
+    end
+  end
+  return true
+end
+
 local parse_event = function(queue, json_data)
   local events = {}
   for event_type, event_data in pairs(json_data) do

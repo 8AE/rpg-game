@@ -157,6 +157,7 @@ end
 app.keypressed = function(key)
   inventory_screen.keypressed(key)
   example_dialog:keypressed(key)
+  player:keypressed(key)
 
   if key == 'i' then
     inventory_screen.show_inventory = not inventory_screen.show_inventory

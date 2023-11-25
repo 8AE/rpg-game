@@ -46,7 +46,7 @@ end
 function Player:draw()
   love.graphics.push()
   love.graphics.draw(self.image, sprite_based_on_direction(self, self.sprites), self.x, self.y)
-  draw_debug_box(self)
+  -- draw_debug_box(self)
   love.graphics.pop()
 end
 
@@ -110,6 +110,12 @@ end
 
 function Player:get_scaled_y()
   return number_scaling.real_to_scaled(self.y)
+end
+
+function Player:keypressed(key)
+  if key == 'return' then
+    love.event.push('interact', self.x, self.y)
+  end
 end
 
 function player.new(image_path)

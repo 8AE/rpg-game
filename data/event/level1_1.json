@@ -54,7 +54,7 @@
         {
             "x": 14,
             "y": 21,
-            "image": "characters/main-character.png",
+            "image": "characters/npc.png",
             "default_direction_facing": "down",
             "can_they_move": false,
             "can_they_be_damaged": false,

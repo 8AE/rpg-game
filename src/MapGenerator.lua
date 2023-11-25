@@ -113,9 +113,11 @@ return function(image_path, map_path, event_path, teleportation_queue, player, s
   function MapGenerator:canMove(target_x, target_y, player_direction)
     target_x = math.floor(target_x / constants.tile_size)
     target_y = math.floor(target_y / constants.tile_size)
-    if parsed_wall_map_data[target_y + 1][target_x + 1] == 1 or
-        player_direction == 'right' and parsed_wall_map_data[target_y + 1][target_x + 2] == 1 or
-        player_direction == 'down' and parsed_wall_map_data[target_y + 2][target_x + 1] == 1 then
+    if (parsed_wall_map_data[target_y + 1][target_x + 1] == 1) or
+        (player_direction == 'right' and parsed_wall_map_data[target_y + 1][target_x + 2] == 1) or
+        (player_direction == 'down' and parsed_wall_map_data[target_y + 2][target_x + 1] == 1) or
+        (not event_manager:can_move(target_x, target_y, player_direction))
+    then
       return false
     else
       return true
