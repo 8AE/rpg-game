@@ -114,7 +114,18 @@ end
 
 function Player:keypressed(key)
   if key == 'return' then
-    love.event.push('interact', self.x, self.y)
+    local x = math.floor(self.x / constants.tile_size)
+    local y = math.floor(self.y / constants.tile_size)
+    if self.direction == 'left' then
+      x = x - 1
+    elseif self.direction == 'right' then
+      x = x + 1
+    elseif self.direction == 'up' then
+      y = y - 1
+    elseif self.direction == 'down' then
+      y = y + 1
+    end
+    love.event.push('interact', x, y)
   end
 end
 

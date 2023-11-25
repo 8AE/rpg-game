@@ -50,6 +50,14 @@ function Dialog_Box:keypressed(key)
   end
 end
 
+function Dialog_Box:is_box_visible()
+  return self.show_box
+end
+
+function Dialog_Box:set_box_visability_to(state)
+  self.show_box = state
+end
+
 function dialog_box.new(text_table, box_location_x, box_location_y)
   local self = {}
   self.text_table = text_table

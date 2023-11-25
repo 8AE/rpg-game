@@ -17,6 +17,12 @@ function Event_Manager:draw()
   end
 end
 
+function Event_Manager:keypressed(key)
+  for _, events in ipairs(self.parsed_events) do
+    events:keypressed(key)
+  end
+end
+
 function Event_Manager:can_move(target_x, target_y, player_direction)
   local state
   for _, events in ipairs(self.parsed_events) do

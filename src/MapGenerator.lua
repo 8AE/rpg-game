@@ -101,6 +101,10 @@ return function(image_path, map_path, event_path, teleportation_queue, player, s
     love.graphics.pop()
   end
 
+  function MapGenerator:keypressed(key)
+    event_manager:keypressed(key)
+  end
+
   function MapGenerator.debug_draw_tile(target_x, target_y)
     love.graphics.push()
     love.graphics.scale(2, 2)
@@ -110,7 +114,7 @@ return function(image_path, map_path, event_path, teleportation_queue, player, s
     love.graphics.pop()
   end
 
-  function MapGenerator:canMove(target_x, target_y, player_direction)
+  function MapGenerator:can_move(target_x, target_y, player_direction)
     target_x = math.floor(target_x / constants.tile_size)
     target_y = math.floor(target_y / constants.tile_size)
     if (parsed_wall_map_data[target_y + 1][target_x + 1] == 1) or

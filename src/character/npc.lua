@@ -1,5 +1,6 @@
 local constants = require("src.util.constants")
 local number_scaling = require("src.util.number_scaling")
+local Dialog_Box = require("src.dialog.dialog_box")
 local npc = {}
 local Npc = {}
 
@@ -36,6 +37,8 @@ function Npc:draw()
     sprite_based_on_direction(self, self.sprites),
     number_scaling.scaled_to_real(self.x),
     number_scaling.scaled_to_real(self.y))
+
+  self.dialog:draw()
   love.graphics.pop()
 end
 
@@ -97,6 +100,10 @@ function Npc:update(dt)
 
 end
 
+function Npc:keypressed(key)
+  self.dialog:keypressed(key)
+end
+
 function Npc:get_scaled_x()
   return number_scaling.real_to_scaled(self.x)
 end
@@ -107,14 +114,20 @@ end
 
 function Npc:can_move(target_x, target_y, player_direction)
   return not ((self.x == target_x and self.y == target_y) or
-    (player_direction == 'right' and self.x == target_x + 1) or
-    (player_direction == 'down' and self.x == target_y + 1))
+    (player_direction == 'right' and self.x == target_x + 1 and self.y == target_y) or
+    (player_direction == 'down' and self.x == target_y + 1) and self.x == target_x)
 end
 
-function love.handlers.interact(x, y)
-  print(x)
-  print(y)
+function Npc:handle_interact(x, y)
+  print(self.x)
+  if self.x == x and self.y == y then
+    print("L")
+  end
 end
+
+-- function love.handlers.interact(x, y)
+--   npc:handle_interact(x, y)
+-- end
 
 function npc.new(image_path, x, y, direction, can_be_moved, can_be_damaged, messages)
   local self = {}
@@ -123,7 +136,10 @@ function npc.new(image_path, x, y, direction, can_be_moved, can_be_damaged, mess
   self.direction = direction
   self.can_be_moved = can_be_moved
   self.can_be_damaged = can_be_damaged
-  self.messages = messages
+  self.dialog = Dialog_Box.new(
+    messages,
+    love.graphics.getWidth() / 2,
+    love.graphics.getHeight() / 2)
   self.moving = false
   self.speed = 1.25
   self.target_x = 0
@@ -132,6 +148,15 @@ function npc.new(image_path, x, y, direction, can_be_moved, can_be_damaged, mess
   self.image = love.graphics.newImage('data/image/' .. image_path)
   self.sprites = generate_sprites(self.image)
   setmetatable(self, { __index = Npc })
+
+  love.handlers.interact = function(x, y)
+    if self.x == x and self.y == y then
+      if not self.dialog:is_box_visible() then
+        self.dialog:set_box_visability_to(true)
+      end
+    end
+  end
+
   return self
 end
 

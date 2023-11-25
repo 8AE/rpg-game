@@ -27,6 +27,9 @@ function Teleport:can_move()
   return true
 end
 
+function Teleport:keypressed(key)
+end
+
 function teleport.new(teleportation_queue, starting_x, starting_y, next_map_substring, next_x, next_y)
   local self = {}
   self.teleportation_queue = teleportation_queue

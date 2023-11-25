@@ -9,14 +9,12 @@ local teleportation_queue = require("src.event.teleportation_queue")
 local map_manager = require("src.map_manager")
 local rpg_print = require('src.font.rpg_print')
 
-local Dialog_Box = require("src.dialog.dialog_box")
 
 local app = {}
 
 local player
 local example_item
 local example_item_2
-local example_dialog
 
 local starting_x = 17
 local starting_y = 21
@@ -33,25 +31,25 @@ local standard_movement_update = function(dt)
 
     if love.keyboard.isDown("up") then
       player:update_direction_if_not_moving('up')
-      if map_manager.current_map:canMove(player.x, player.y - constants.tile_size) then
+      if map_manager.current_map:can_move(player.x, player.y - constants.tile_size) then
         player:move(player.x, player.y - constants.tile_size)
       end
     end
     if love.keyboard.isDown("down") then
       player:update_direction_if_not_moving('down')
-      if map_manager.current_map:canMove(player.x, player.y + player.speed, player.direction) then
+      if map_manager.current_map:can_move(player.x, player.y + player.speed, player.direction) then
         player:move(player.x, player.y + constants.tile_size)
       end
     end
     if love.keyboard.isDown("left") then
       player:update_direction_if_not_moving('left')
-      if map_manager.current_map:canMove(player.x - constants.tile_size, player.y) then
+      if map_manager.current_map:can_move(player.x - constants.tile_size, player.y) then
         player:move(player.x - constants.tile_size, player.y)
       end
     end
     if love.keyboard.isDown("right") then
       player:update_direction_if_not_moving('right')
-      if map_manager.current_map:canMove(player.x + player.speed, player.y, player.direction) then
+      if map_manager.current_map:can_move(player.x + player.speed, player.y, player.direction) then
         player:move(player.x + constants.tile_size, player.y)
       end
     end
@@ -65,11 +63,6 @@ function app.load(args)
   make_item("data/image/weapon_cells.png")
   table.insert(player.inventory, example_item)
   table.insert(player.inventory, example_item_2)
-  example_dialog = Dialog_Box.new(
-    { "TEST BOXS ARE REALLY FUN DID U KNOW THE FIRST BOX EVER CREATED WAS A TEST BOX",
-      "this is a second box" },
-    love.graphics.getWidth() / (8 * constants.zoom),
-    love.graphics.getHeight() / (1.5 * constants.zoom))
 end
 
 local print_debug_information = function(player)
@@ -77,7 +70,7 @@ local print_debug_information = function(player)
   rpg_print("Player x scaled = " .. math.floor(player.x / constants.tile_size), 0, 20)
   rpg_print("Player y = " .. player.y, 0, 40)
   rpg_print("Player y scaled = " .. math.floor(player.y / constants.tile_size), 0, 60)
-  rpg_print("Can i be here? = " .. tostring(map_manager.current_map:canMove(player.x, player.y)), 0, 80)
+  rpg_print("Can i be here? = " .. tostring(map_manager.current_map:can_move(player.x, player.y)), 0, 80)
   rpg_print("Inventory is shown = " .. tostring(inventory_screen.show_inventory), 0, 100)
   rpg_print(
     "Version " ..
@@ -134,12 +127,11 @@ end
 
 function app.draw()
   love.graphics.push()
-  love.graphics.scale(constants.zoom, constants.zoom)
+  -- love.graphics.scale(constants.zoom, constants.zoom)
 
   draw_main_screen()
   draw_hud()
   draw_inventory()
-  example_dialog:draw()
 
   love.graphics.pop()
 
@@ -156,8 +148,8 @@ end
 
 app.keypressed = function(key)
   inventory_screen.keypressed(key)
-  example_dialog:keypressed(key)
   player:keypressed(key)
+  map_manager.current_map:keypressed(key)
 
   if key == 'i' then
     inventory_screen.show_inventory = not inventory_screen.show_inventory
